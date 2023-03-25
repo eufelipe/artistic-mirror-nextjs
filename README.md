@@ -1,38 +1,57 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🎭 Espelho Artístico 🎨
 
-## Getting Started
+Olá, seja bem-vindo ao projeto **Espelho Artístico**! 🥳 Este projeto foi desenvolvido durante o **Innovathon** da Produção de Conteúdo da Globo para facilitar a vida dos atores durante a maquiagem, permitindo que estudem seus textos e vejam outras informações úteis diretamente no espelho interativo. 💄📖✨
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
+## 🚀 Começando
+
+Para começar a usar o EspelhoArtístico, siga estas etapas:
+
+1. Clone o repositório do projeto:
+
+``
+git clone https://github.com/eufelipe/artistic-mirror.git
+``
+
+2. Instale as dependências do projeto:
+
+
+``
+yarn
+``
+
+3. Inicie o projeto:
+
+``
 yarn dev
-# or
-pnpm dev
-```
+``
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Pronto! Agora o EspelhoArtístico está em execução na porta `3000` e você pode acessá-lo em seu navegador em `http://localhost:3000`. 🎉
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## 🎯 Funcionalidades
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- 📑 Estudo de textos: Leia seus roteiros e scripts diretamente no espelho, facilitando o ensaio enquanto se prepara para a cena.
+- 📰 Notícias e atualizações: Fique por dentro das últimas notícias e atualizações do mundo do teatro e cinema.
+- 📅 Agenda: Visualize seus compromissos e ensaios agendados para que você esteja sempre a par do que está por vir.
+- 📽️ Reprodução de vídeos: Assista a vídeos de cenas e performances anteriores para análise e aprimoramento.
+- 🖐️ Reconhecimento de gestos: Navegue pelo aplicativo usando gestos, sem a necessidade de tocar na tela.
 
-## Learn More
+## 🛠️ Tecnologias utilizadas
 
-To learn more about Next.js, take a look at the following resources:
+- React
+- Node.js
+- Raspberry Pi
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 💡 Contribuindo
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Adoraríamos receber suas contribuições! 🤗 Sinta-se à vontade para enviar suas sugestões e melhorias através de pull requests ou abrir issues no GitHub. Vamos construir juntos um EspelhoArtístico ainda melhor! 🌟
 
-## Deploy on Vercel
+## 📜 Licença
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Este projeto está licenciado sob a Licença MIT. Consulte o arquivo `LICENSE.md` para obter mais informações.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+---
+
+Obrigado por conferir nosso projeto! Esperamos que você se divirta usando o **Espelho Artístico**! 🎭🌈
