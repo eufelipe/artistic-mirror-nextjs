@@ -1,94 +1,67 @@
-"use client";
-
 import * as handpose from "@tensorflow-models/handpose";
 import * as fp from "fingerpose";
 import { useCallback, useEffect } from "react";
 import Webcam from "react-webcam";
-import { drawHand } from "../utils/utilities";
 
 type HandGestureDetectorProps = {
   onGestureDetected: (gestureName: string) => void;
+  onClick: (x: number, y: number) => void;
   webcamRef: React.RefObject<Webcam>;
-  canvasRef: React.RefObject<HTMLCanvasElement>;
 };
 
-function HandGestureDetector({
+const HandGestureDetector: React.FC<HandGestureDetectorProps> = ({
   onGestureDetected,
   webcamRef,
-  canvasRef,
-}: HandGestureDetectorProps) {
-  const detect = useCallback(
-    async (
-      net: handpose.HandPose,
-      video: HTMLVideoElement,
-      canvas: HTMLCanvasElement
-    ) => {
-      try {
-        // Verificar se os dados estão disponíveis
-        if (video.readyState === 4) {
-          // Obter propriedades do vídeo
-          const videoWidth = video.videoWidth;
-          const videoHeight = video.videoHeight;
+  onClick,
+}) => {
+  const checkPinchGesture = (landmarks: number[][]) => {
+    const thumbTip = landmarks[4];
+    const indexFingerTip = landmarks[8];
+    const distance = Math.sqrt(
+      Math.pow(indexFingerTip[0] - thumbTip[0], 2) +
+        Math.pow(indexFingerTip[1] - thumbTip[1], 2)
+    );
+    return distance < 30; // Ajuste este valor conforme necessário
+  };
 
-          // Definir largura do vídeo
-          video.width = videoWidth;
-          video.height = videoHeight;
-
-          // Definir altura e largura do canvas
-          canvas.width = videoWidth;
-          canvas.height = videoHeight;
-
-          // Fazer detecções
-          const hand = await net.estimateHands(video);
-
-          // Detectar gestos
-          if (hand.length > 0) {
-            const GE = new fp.GestureEstimator([
-              fp.Gestures.VictoryGesture,
-              fp.Gestures.ThumbsUpGesture,
-            ]);
-            const gesture = await GE.estimate(hand[0].landmarks, 4);
-            if (gesture.gestures !== undefined && gesture.gestures.length > 0) {
-              const confidence = gesture.gestures.map(
-                (prediction: any) => prediction.confidence
-              );
-              const maxConfidence = confidence.indexOf(
-                Math.max.apply(null, confidence)
-              );
-              onGestureDetected(gesture.gestures[maxConfidence]?.name);
-            }
-          }
-
-          // Desenhar malha
-          const ctx = canvas.getContext("2d");
-          if (ctx) drawHand(hand, ctx);
-        }
-      } catch (error) {
-        console.error("Erro ao detectar gestos:", error);
-      }
-    },
-    [onGestureDetected]
-  );
-
-  useEffect(() => {
-    let video = webcamRef.current?.video as HTMLVideoElement;
-    let canvas = canvasRef.current as HTMLCanvasElement;
-    let intervalId: NodeJS.Timeout;
-
-    async function runHandpose() {
+  const detect = useCallback(async () => {
+    const video = webcamRef.current?.video;
+    if (video && video.readyState === 4) {
       const net = await handpose.load();
-      console.log("Modelo Handpose carregado.");
-      intervalId = setInterval(() => {
-        detect(net, video, canvas);
-      }, 10);
+      const hand = await net.estimateHands(video);
+
+      if (hand.length > 0) {
+        const isPinching = checkPinchGesture(hand[0].landmarks);
+
+        if (isPinching) {
+          const x = hand[0].landmarks[8][0]; // Coordenada X do dedo indicador
+          const y = hand[0].landmarks[8][1]; // Coordenada Y do dedo indicador
+          onClick(x, y);
+        }
+
+        const GE = new fp.GestureEstimator([
+          fp.Gestures.VictoryGesture,
+          fp.Gestures.ThumbsUpGesture,
+        ]);
+        const gesture = await GE.estimate(hand[0].landmarks, 7.5);
+        if (gesture.gestures.length > 0) {
+          const maxConfidenceGesture = gesture.gestures.reduce(
+            (prev: any, current: any) =>
+              prev.confidence > current.confidence ? prev : current
+          );
+          onGestureDetected(maxConfidenceGesture.name);
+        }
+      }
     }
 
-    runHandpose();
+    setTimeout(() => detect(), 100);
+  }, [onGestureDetected, webcamRef]);
 
-    return () => clearInterval(intervalId);
-  }, [detect, webcamRef, canvasRef]);
+  useEffect(() => {
+    detect();
+  }, [detect]);
 
   return null;
-}
+};
 
 export default HandGestureDetector;

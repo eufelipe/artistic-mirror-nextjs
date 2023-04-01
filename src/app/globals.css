@@ -109,3 +109,14 @@ a {
     color-scheme: dark;
   }
 }
+
+
+#hands {
+  pointer-events: none;
+  position: fixed;
+  z-index: 2;
+}
+
+.mirrored {
+  transform: scaleX(-1);
+}
