@@ -73,7 +73,7 @@ const TextViewer = () => {
 
   return (
     <>
-      <div className="fixed bg-gray-900 z-50  w-screen p-4 flex flex-col items-center justify-center">
+      <div className="fixed bg-gray-900 z-40  w-screen p-4 flex flex-col items-center justify-center">
         <ButtonGroup
           cardView={cardView}
           toggleCardView={() => toggleCardView()}

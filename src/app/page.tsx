@@ -8,10 +8,15 @@ import Webcam from "react-webcam";
 import HandGestureDetector from "./components/HandGestureDetector";
 import useEasterEggConfetti from "./hooks/useEasterEggConfetti";
 import useEasterEggGlobo from "./hooks/useEasterEggGlobo";
+import TextViewer from "./text";
+
+const DISABLED_EASTER_EGGS = false;
+const DISABLED_HAND_GESTURE = false;
 
 export default function Home() {
   const webcamRef = useRef<Webcam>(null);
   const [gesture, setGesture] = useState("");
+  const [disableGesture, setDisableGesture] = useState(false);
 
   const { showGlobo, onGlobo } = useEasterEggGlobo();
   const { showConfetti, onConfetti } = useEasterEggConfetti();
@@ -19,10 +24,12 @@ export default function Home() {
   const handleGestureDetected = useCallback((gestureName: string) => {
     setGesture(gestureName);
 
-    if (gestureName === "thumbs_up") {
-      onConfetti();
-    } else if (gestureName === "victory") {
-      onGlobo();
+    if (!DISABLED_EASTER_EGGS) {
+      if (gestureName === "thumbs_up") {
+        onConfetti();
+      } else if (gestureName === "victory") {
+        onGlobo();
+      }
     }
   }, []);
 
@@ -69,34 +76,35 @@ export default function Home() {
     <div>
       {on ? (
         <>
-          {/* <TextViewer /> */}
-
-          {showConfetti && <ConfettiExplosion />}
+          <TextViewer />
 
           <p className="text-white">
             Width {width} e height {height}
           </p>
-          <Webcam
-            audio={false}
-            ref={webcamRef}
-            mirrored={true}
-            style={{
-              objectFit: "cover",
-              width,
-              height,
-              position: "fixed",
-              right: 0,
-              bottom: 0,
-              minWidth: width,
-              minHeight: height,
-            }}
-          />
+          {!disableGesture && !DISABLED_HAND_GESTURE && (
+            <>
+              <Webcam
+                audio={false}
+                ref={webcamRef}
+                mirrored={true}
+                screenshotFormat="image/jpeg"
+                style={{
+                  objectFit: "cover",
+                  width: 0,
+                  height: 0,
+                  position: "fixed",
+                  right: 0,
+                  bottom: 0,
+                }}
+              />
 
-          <canvas
-            id="hands"
-            ref={canvasRef}
-            className={`absolute mx-auto inset-x-0 text-center z-9 w-${width} h-${height} mirrored`}
-          />
+              <canvas
+                id="hands"
+                ref={canvasRef}
+                className={`absolute mx-auto inset-x-0 text-center z-9 w-${width} h-${height} mirrored`}
+              />
+            </>
+          )}
         </>
       ) : (
         <div className="fixed inset-0 bg-black z-50 pointer-events-none"></div>
@@ -119,18 +127,34 @@ export default function Home() {
       )}
 
       {showGlobo && (
-        <div className="fixed inset-0 bottom-0 right-0 m-4 pointer-events-none">
+        <div className="fixed z-50 inset-0 bottom-0 right-0 m-4 pointer-events-none">
           <img src="/globo.png" className="z-50" width={100} />
         </div>
       )}
 
-      {webcamRef.current && canvasRef.current && (
-        <HandGestureDetector
-          onClick={handleClick}
-          onGestureDetected={handleGestureDetected}
-          webcamRef={webcamRef}
-        />
+      {showConfetti && (
+        <div className="fixed z-50 inset-0 bottom-0 right-0 m-4 pointer-events-none">
+          <ConfettiExplosion />
+        </div>
       )}
+
+      {!disableGesture &&
+        !DISABLED_HAND_GESTURE &&
+        webcamRef.current &&
+        canvasRef.current && (
+          <HandGestureDetector
+            onClick={handleClick}
+            onGestureDetected={handleGestureDetected}
+            webcamRef={webcamRef}
+          />
+        )}
+
+      <button
+        onClick={() => setDisableGesture((prev) => !prev)}
+        className="fixed z-50 bottom-0 left-0 m-4 bg-gray-400 drop-shadow-2xl text-white font-bold py-2 px-4 rounded"
+      >
+        Desativar
+      </button>
     </div>
   );
 }
