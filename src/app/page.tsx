@@ -76,13 +76,12 @@ export default function Home() {
           <p className="text-white">
             Width {width} e height {height}
           </p>
-
           <Webcam
             audio={false}
             ref={webcamRef}
             mirrored={true}
             style={{
-              objectFit: "contain",
+              objectFit: "cover",
               width,
               height,
               position: "fixed",
