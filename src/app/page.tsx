@@ -10,8 +10,8 @@ import useEasterEggConfetti from "./hooks/useEasterEggConfetti";
 import useEasterEggGlobo from "./hooks/useEasterEggGlobo";
 import TextViewer from "./text";
 
-const DISABLED_EASTER_EGGS = false;
-const DISABLED_HAND_GESTURE = false;
+const DISABLED_EASTER_EGGS = true;
+const DISABLED_HAND_GESTURE = true;
 
 export default function Home() {
   const webcamRef = useRef<Webcam>(null);
