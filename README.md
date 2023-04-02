@@ -10,7 +10,7 @@ Para começar a usar o EspelhoArtístico, siga estas etapas:
 1. Clone o repositório do projeto:
 
 ``
-git clone https://github.com/eufelipe/artistic-mirror.git
+git clone https://github.com/eufelipe/artistic-mirror-nextjs
 ``
 
 2. Instale as dependências do projeto:
